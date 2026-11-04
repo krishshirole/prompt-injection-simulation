@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚡ Riddle Quest — Tech Riddles from Fantasy Worlds</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ═══════════════ JOIN SCREEN ═══════════════ -->
+  <div id="join-screen" class="screen active">
+    <div class="join-card">
+      <div class="logo">⚡</div>
+      <h1>Riddle Quest</h1>
+      <p class="subtitle">Fantasy Stories × Tech Answers</p>
+      <div class="input-group">
+        <input type="text" id="player-name" placeholder="Enter your name..." maxlength="30" autocomplete="off" />
+        <input type="text" id="game-pin" placeholder="Enter Game PIN..." maxlength="4" autocomplete="off" inputmode="numeric" />
+        <button id="join-btn">Join Game</button>
+      </div>
+      <p id="join-error" class="error-msg"></p>
+    </div>
+  </div>
+
+  <!-- ═══════════════ LOBBY SCREEN ═══════════════ -->
+  <div id="lobby-screen" class="screen">
+    <div class="lobby-card">
+      <div class="lobby-icon">🏰</div>
+      <h1>Welcome, <span id="lobby-name"></span>!</h1>
+      <p class="lobby-subtitle">You're in the lobby. The host will start the quiz soon...</p>
+      <div class="lobby-waiting">
+        <div class="spinner"></div>
+        <span>Waiting for host to start the game</span>
+      </div>
+      <div class="lobby-stats">
+        <div class="lobby-stat">
+          <span class="lobby-stat-value" id="lobby-count">0</span>
+          <span class="lobby-stat-label">Players Joined</span>
+        </div>
+      </div>
+      <div class="lobby-players-section">
+        <h3>Players in Lobby</h3>
+        <div id="lobby-players" class="lobby-players-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ GAME SCREEN ═══════════════ -->
+  <div id="game-screen" class="screen">
+    <header class="top-bar">
+      <div class="player-info">
+        <span class="player-icon">🧙</span>
+        <span id="display-name"></span>
+      </div>
+      <div class="timer-pill" id="timer-display">00:00</div>
+      <div class="stats">
+        <div class="stat-pill">⭐ <span id="display-score">0</span></div>
+        <div class="stat-pill">✅ <span id="display-solved">0</span>/<span id="display-total">20</span></div>
+      </div>
+    </header>
+    <main class="game-main">
+      <section class="riddle-panel">
+        <div id="riddle-card" class="riddle-card">
+          <div class="category-badge" id="riddle-category">Harry Potter</div>
+          <p class="riddle-text" id="riddle-text">Loading...</p>
+          <div id="hint-area" class="hint-area hidden">
+            <div class="hint-box">
+              <span class="hint-icon">💡</span>
+              <span id="hint-text"></span>
+            </div>
+          </div>
+          <div class="answer-section">
+            <input type="text" id="answer-input" placeholder="Type your answer..." autocomplete="off" />
+            <div class="btn-row">
+              <button id="hint-btn" class="btn-hint">💡 Use Hint (−5 pts)</button>
+              <button id="submit-btn" class="btn-submit">Submit ✨</button>
+            </div>
+          </div>
+          <div id="feedback" class="feedback hidden"></div>
+        </div>
+        <div id="complete-card" class="riddle-card hidden">
+          <div class="complete-content">
+            <div class="trophy">🏆</div>
+            <h2>All Riddles Solved!</h2>
+            <p>Amazing! Wait for the timer to end to see final results.</p>
+            <p class="final-score">Your Score: <strong id="final-score">0</strong></p>
+          </div>
+        </div>
+      </section>
+      <section class="leaderboard-panel">
+        <h2 class="lb-title">🏆 Leaderboard</h2>
+        <div class="lb-header">
+          <span class="lb-rank">#</span>
+          <span class="lb-name">Player</span>
+          <span class="lb-solved">Solved</span>
+          <span class="lb-score">Score</span>
+        </div>
+        <div id="leaderboard-list" class="lb-list">
+          <p class="lb-empty">Waiting for players...</p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ═══════════════ FINISHED SCREEN ═══════════════ -->
+  <div id="finished-screen" class="screen">
+    <div class="finished-container">
+      <div class="finished-header">
+        <div class="finished-icon">🎉</div>
+        <h1>Game Over!</h1>
+        <p class="finished-subtitle">Here are the final results</p>
+      </div>
+      <div class="finished-stats">
+        <div class="fin-stat">
+          <span class="fin-stat-value" id="fin-final-score">0</span>
+          <span class="fin-stat-label">Your Score</span>
+        </div>
+        <div class="fin-stat rank-card">
+          <span class="fin-stat-value" id="fin-final-rank">—</span>
+          <span class="fin-stat-label">Your Rank</span>
+        </div>
+      </div>
+      <div class="finished-lb">
+        <h2>🏆 Final Leaderboard</h2>
+        <div class="lb-header">
+          <span class="lb-rank">#</span>
+          <span class="lb-name">Player</span>
+          <span class="lb-solved">Solved</span>
+          <span class="lb-score">Score</span>
+        </div>
+        <div id="fin-leaderboard-list" class="lb-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,142 @@
+[
+  {
+    "id": 1,
+    "riddle": "In Hogwarts, this creature causes chaos in code. Hagrid might love it, but developers squash it daily.",
+    "hint": "It rhymes with 'mug' and hides in your program.",
+    "answer": "bug",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 2,
+    "riddle": "Like the One Ring that goes round and round endlessly, in code I repeat instructions until a condition sets me free.",
+    "hint": "Think of something circular — it starts, runs, and repeats.",
+    "answer": "loop",
+    "category": "Lord of the Rings"
+  },
+  {
+    "id": 3,
+    "riddle": "Nagini speaks it, Voldemort commands it in Parseltongue. In the coding world, it's one of the most popular languages — and it's named after a real creature.",
+    "hint": "It's a snake... and also a programming language created by Guido van Rossum.",
+    "answer": "python",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 4,
+    "riddle": "In Middle-earth, Gandalf roars 'You shall not pass!' In code, this statement checks a condition — if it's true, you pass; if not, you take another path.",
+    "hint": "It's the most basic decision-making keyword: __ / else.",
+    "answer": "if",
+    "category": "Lord of the Rings"
+  },
+  {
+    "id": 5,
+    "riddle": "Like a Horcrux splits Voldemort's soul into numbered pieces, this data structure stores multiple values in indexed slots — each piece accessible by its position.",
+    "hint": "It starts at index 0 and holds items in order. Think of a list with numbered compartments.",
+    "answer": "array",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 6,
+    "riddle": "The Marauder's Map tracks every footstep at Hogwarts. In the developer world, this tool tracks every change in your code — who wrote it, when, and why.",
+    "hint": "Linus Torvalds created it. You 'commit', 'push', and 'pull' with it.",
+    "answer": "git",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 7,
+    "riddle": "Like Dumbledore's Pensieve stores memories for quick access but loses them when turned off, this computer component does the same — fast, temporary storage.",
+    "hint": "It stands for Random Access Memory.",
+    "answer": "ram",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 8,
+    "riddle": "In Narnia, Lucy steps through the wardrobe and sees a new world. In code, this simple function is the first spell every beginner learns — it reveals output on your screen.",
+    "hint": "In Python it's print(), in Java it's System.out.______()",
+    "answer": "print",
+    "category": "Narnia"
+  },
+  {
+    "id": 9,
+    "riddle": "The Sorting Hat at Hogwarts examines you and places you in the right house. This algorithm does the same — it takes a messy collection and arranges everything in order.",
+    "hint": "Bubble, Quick, Merge — these are all types of ____ing algorithms.",
+    "answer": "sort",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 10,
+    "riddle": "Like Dobby the house-elf who became FREE when Harry gave him a sock, this type of software is freely available for anyone to use, modify, and share.",
+    "hint": "Linux is a famous example. The opposite of proprietary. Two words: ____ Source.",
+    "answer": "open source",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 11,
+    "riddle": "Like a Boggart that shapeshifts into whatever form it needs, this OOP concept lets one interface take many forms — a single method behaving differently for different objects.",
+    "hint": "Poly = many, morph = forms. It's a pillar of Object-Oriented Programming.",
+    "answer": "polymorphism",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 12,
+    "riddle": "Owls deliver messages between wizards across great distances. In the programming world, this is how different software systems talk to each other — sending requests and getting responses.",
+    "hint": "Three letters. Application Programming Interface.",
+    "answer": "api",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 13,
+    "riddle": "Like Nearly Headless Nick who exists at Hogwarts but can't be fully grasped, this special value in code means a variable exists but points to absolutely nothing.",
+    "hint": "It's the absence of a value. In Java and C# it's ____, in Python it's None.",
+    "answer": "null",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 14,
+    "riddle": "Hermione's Time-Turner lets her go back and redo things. In coding, this key command undoes your last action and takes you back to the previous state.",
+    "hint": "Ctrl + __ is the universal shortcut for this on Windows.",
+    "answer": "undo",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 15,
+    "riddle": "The Room of Requirement at Hogwarts appears only when needed and provides exactly what you ask for. In programming, this concept creates space in memory only when the program needs it at runtime.",
+    "hint": "The opposite of static allocation. It's _______ memory allocation.",
+    "answer": "dynamic",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 16,
+    "riddle": "In Star Wars, the Force has only two sides — Light and Dark, On and Off, 1 and 0. Computers think entirely in this number system.",
+    "hint": "It uses only two digits: 0 and 1. The word starts with 'bi'.",
+    "answer": "binary",
+    "category": "Star Wars"
+  },
+  {
+    "id": 17,
+    "riddle": "Like the Invisibility Cloak that hides Harry's details from the world, this OOP concept hides internal data and only exposes what's necessary through methods.",
+    "hint": "It bundles data and methods together, hiding complexity. It's a pillar of OOP starting with 'E'.",
+    "answer": "encapsulation",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 18,
+    "riddle": "In the wizarding world, spells like 'Expelliarmus' and 'Lumos' are special words with fixed meanings. In code, these reserved words like 'for', 'while', and 'class' have fixed meanings too.",
+    "hint": "They are ______s — words reserved by the programming language that you can't use as variable names.",
+    "answer": "keyword",
+    "category": "Harry Potter"
+  },
+  {
+    "id": 19,
+    "riddle": "Like Aragorn who inherits the throne and all powers of the King of Gondor, in OOP a child class receives all properties and methods from its parent class.",
+    "hint": "It's one of the four pillars of OOP. A subclass ______s from a superclass.",
+    "answer": "inheritance",
+    "category": "Lord of the Rings"
+  },
+  {
+    "id": 20,
+    "riddle": "In Game of Thrones, the Iron Bank says 'A Lannister always pays his debts' — every transaction is recorded. In code, this practice means writing notes in your program explaining what each section does.",
+    "hint": "In Python you use #, in JavaScript you use //. They are called ______s.",
+    "answer": "comment",
+    "category": "Game of Thrones"
+  }
+]
