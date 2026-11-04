@@ -3,29 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🎛️ Riddle Quest — Host Dashboard</title>
+  <title>🎛️ Gandalf CTF — Instructor Control Center</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎛️</text></svg>">
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #0b0b14; --surface: #13132a; --surface2: #1c1c3a;
-      --accent: #e94560; --gold: #f5c518; --green: #00c853;
-      --blue: #4fc3f7; --text: #eee; --text-dim: #888; --radius: 14px;
+      --bg: #0b0b14; --surface: #121420; --surface2: #1a1d2e;
+      --accent: #00f0ff; --gold: #f5c518; --green: #10b981;
+      --red: #ef4444; --purple: #a855f7; --text: #f1f5f9; --text-dim: #94a3b8; --radius: 12px;
     }
     body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
     /* ── Login Screen ───────────────── */
     .login-screen {
       display: flex; justify-content: center; align-items: center; min-height: 100vh;
-      background: radial-gradient(circle at 30% 40%, #1a1a4e 0%, var(--bg) 70%);
+      background: radial-gradient(circle at 50% 30%, #171c38 0%, var(--bg) 75%);
     }
     .login-screen.hidden { display: none; }
     .login-card {
       background: var(--surface); padding: 3rem 2.5rem; border-radius: var(--radius);
-      text-align: center; width: min(400px, 90vw);
-      box-shadow: 0 20px 60px rgba(0,0,0,.5); border: 1px solid rgba(255,255,255,.06);
+      text-align: center; width: min(420px, 92vw);
+      box-shadow: 0 25px 70px rgba(0,0,0,.7); border: 1px solid rgba(0,240,255,.2);
     }
-    .login-card h1 { font-size: 1.8rem; margin-bottom: .3rem; color: var(--gold); }
+    .login-card h1 { font-size: 1.8rem; margin-bottom: .3rem; color: var(--accent); }
     .login-card .sub { color: var(--text-dim); margin-bottom: 2rem; font-size: .9rem; }
     .login-card input {
       width: 100%; padding: .9rem 1.2rem; border-radius: 10px;
@@ -35,14 +35,14 @@
     .login-card input:focus { border-color: var(--accent); }
     .login-card button {
       width: 100%; padding: .9rem; border-radius: 10px; border: none;
-      background: linear-gradient(135deg, var(--accent), #c0392b);
-      color: #fff; font-size: 1.05rem; font-weight: 700; cursor: pointer;
+      background: linear-gradient(135deg, var(--accent), #3b82f6);
+      color: #050816; font-size: 1.05rem; font-weight: 800; cursor: pointer;
     }
-    .login-card button:hover { box-shadow: 0 6px 20px rgba(233,69,96,.4); }
-    .login-error { color: var(--accent); margin-top: .8rem; font-size: .85rem; min-height: 1.2em; }
+    .login-card button:hover { box-shadow: 0 6px 20px rgba(0,240,255,.4); }
+    .login-error { color: var(--red); margin-top: .8rem; font-size: .85rem; min-height: 1.2em; }
 
     /* ── Dashboard ──────────────────── */
-    .dashboard { display: none; padding: 1.5rem; }
+    .dashboard { display: none; padding: 1.5rem; max-width: 1250px; margin: 0 auto; }
     .dashboard.active { display: block; }
 
     .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
@@ -55,20 +55,25 @@
     }
     .btn:active { transform: scale(.96); }
     .btn:disabled { opacity: .4; cursor: not-allowed; }
-    .btn-danger { background: var(--accent); color: #fff; }
-    .btn-link { background: var(--surface2); color: var(--blue); border: 1px solid rgba(79,195,247,.2); }
+    .btn-danger { background: var(--red); color: #fff; }
+    .btn-link { background: var(--surface2); color: var(--accent); border: 1px solid rgba(0,240,255,.2); }
     .btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid rgba(255,255,255,.1); }
-    .btn-start { background: linear-gradient(135deg, var(--green), #00a844); color: #fff; font-size: 1rem; padding: .8rem 2rem; }
-    .btn-start:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(0,200,83,.4); transform: translateY(-2px); }
-    .btn-end { background: #ff6b35; color: #fff; }
+    .btn-start { background: linear-gradient(135deg, var(--green), #059669); color: #fff; font-size: 1.05rem; padding: .85rem 2.2rem; }
+    .btn-start:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(16,185,129,.4); transform: translateY(-2px); }
+    .btn-end { background: #f97316; color: #fff; }
+
+    /* ── Grid for Configs ───────────── */
+    .config-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1.5rem;
+    }
 
     /* ── PIN Card ───────────────────── */
     .pin-card {
       background: var(--surface); border-radius: var(--radius); padding: 1.2rem 1.5rem;
-      margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.05);
       display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
     }
-    .pin-label { color: var(--text-dim); font-size: .85rem; }
+    .pin-label { color: var(--text-dim); font-size: .85rem; font-weight: 600; text-transform: uppercase; }
     .pin-value {
       font-size: 2.2rem; font-weight: 800; letter-spacing: 8px;
       color: var(--gold); font-family: 'Consolas', monospace;
@@ -79,27 +84,41 @@
 
     /* ── Network bar ───────────────── */
     .network-bar {
-      background: var(--surface); border-radius: var(--radius); padding: 1rem 1.5rem;
-      margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,.05);
+      background: var(--surface); border-radius: var(--radius); padding: 1.2rem 1.5rem;
+      border: 1px solid rgba(255,255,255,.05);
       display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
     }
-    .network-bar .label { color: var(--text-dim); font-size: .85rem; }
+    .network-bar .label { color: var(--text-dim); font-size: .85rem; font-weight: 600; text-transform: uppercase; }
     .network-bar .url {
       background: var(--bg); padding: .5rem 1rem; border-radius: 8px;
-      font-family: 'Consolas', monospace; font-size: .95rem; color: var(--gold); cursor: pointer;
+      font-family: 'Consolas', monospace; font-size: .95rem; color: var(--accent); cursor: pointer;
     }
     .copy-msg { color: var(--green); font-size: .8rem; opacity: 0; transition: opacity .2s; }
     .copy-msg.show { opacity: 1; }
+
+    /* ── AI Engine Bar ──────────────── */
+    .engine-card {
+      background: var(--surface); border-radius: var(--radius); padding: 1.2rem 1.5rem;
+      border: 1px solid rgba(168,85,247,.25); margin-bottom: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .engine-info h3 { font-size: 1rem; color: var(--purple); margin-bottom: .2rem; }
+    .engine-info p { color: var(--text-dim); font-size: .85rem; }
+    .engine-controls { display: flex; gap: .6rem; align-items: center; }
+    .engine-input {
+      background: var(--bg); border: 1px solid rgba(255,255,255,.1);
+      padding: .5rem .8rem; border-radius: 8px; color: var(--text); font-size: .85rem; width: 220px;
+    }
 
     /* ── State Banner ──────────────── */
     .state-banner {
       border-radius: var(--radius); padding: 1rem 1.5rem; margin-bottom: 1.5rem;
       display: flex; align-items: center; justify-content: center; gap: .8rem;
-      font-weight: 700; font-size: 1rem;
+      font-weight: 800; font-size: 1rem; text-transform: uppercase; letter-spacing: 1px;
     }
-    .state-banner.state-lobby { background: rgba(245,197,24,.1); border: 1px solid rgba(245,197,24,.25); color: var(--gold); }
-    .state-banner.state-playing { background: rgba(0,200,83,.1); border: 1px solid rgba(0,200,83,.25); color: var(--green); }
-    .state-banner.state-finished { background: rgba(233,69,96,.1); border: 1px solid rgba(233,69,96,.25); color: var(--accent); }
+    .state-banner.state-lobby { background: rgba(0,240,255,.1); border: 1px solid rgba(0,240,255,.25); color: var(--accent); }
+    .state-banner.state-playing { background: rgba(16,185,129,.1); border: 1px solid rgba(16,185,129,.25); color: var(--green); }
+    .state-banner.state-finished { background: rgba(239,68,68,.1); border: 1px solid rgba(239,68,68,.25); color: var(--red); }
 
     /* ── Lobby Controls ────────────── */
     .lobby-controls {
@@ -108,23 +127,23 @@
     }
     .lobby-controls h2 { margin-bottom: 1rem; font-size: 1.2rem; }
     .timer-config { display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-    .timer-config label { color: var(--text-dim); font-size: .9rem; }
+    .timer-config label { color: var(--text-dim); font-size: .9rem; font-weight: 600; }
     .timer-config select {
       padding: .6rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,.15);
       background: var(--bg); color: var(--text); font-size: 1rem; outline: none;
     }
     .lobby-player-list { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; margin-bottom: 1.5rem; max-height: 150px; overflow-y: auto; }
     .lobby-chip { background: var(--surface2); padding: .4rem .9rem; border-radius: 20px; font-size: .85rem; }
-    .start-error { color: var(--accent); margin-top: .8rem; font-size: .85rem; min-height: 1.2em; }
+    .start-error { color: var(--red); margin-top: .8rem; font-size: .85rem; min-height: 1.2em; }
 
     /* ── Running Timer ─────────────── */
     .running-timer {
       background: var(--surface); border-radius: var(--radius); padding: 1.5rem;
       margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,.05);
-      text-align: center; display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;
+      text-align: center; display: flex; align-items: center; justify-content: center; gap: 2.5rem; flex-wrap: wrap;
     }
     .big-timer { font-size: 3.5rem; font-weight: 800; font-family: 'Consolas', monospace; min-width: 150px; }
-    .big-timer.danger { color: var(--accent); animation: pulse 1s infinite; }
+    .big-timer.danger { color: var(--red); animation: pulse 1s infinite; }
     @keyframes pulse { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.05); } }
 
     /* ── Stats ──────────────────────── */
@@ -132,17 +151,17 @@
     .stat-card { background: var(--surface); border-radius: var(--radius); padding: 1.3rem; border: 1px solid rgba(255,255,255,.05); text-align: center; }
     .stat-value { font-size: 2.4rem; font-weight: 800; line-height: 1.1; }
     .stat-label { color: var(--text-dim); font-size: .8rem; text-transform: uppercase; letter-spacing: .5px; margin-top: .3rem; }
-    .stat-card.online .stat-value { color: var(--green); }
-    .stat-card.avg .stat-value { color: var(--blue); }
+    .stat-card.online .stat-value { color: var(--accent); }
+    .stat-card.avg .stat-value { color: #60a5fa; }
     .stat-card.top .stat-value { color: var(--gold); }
-    .stat-card.done .stat-value { color: var(--accent); }
+    .stat-card.done .stat-value { color: var(--green); }
 
     /* ── Table ──────────────────────── */
     .table-card { background: var(--surface); border-radius: var(--radius); border: 1px solid rgba(255,255,255,.05); overflow: hidden; }
     .table-header { display: flex; justify-content: space-between; align-items: center; padding: 1rem 1.5rem; border-bottom: 1px solid rgba(255,255,255,.06); }
     .table-header h2 { font-size: 1.1rem; }
     .count { color: var(--text-dim); font-size: .85rem; }
-    .search-box { padding: .5rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); background: var(--bg); color: var(--text); font-size: .85rem; outline: none; width: 200px; }
+    .search-box { padding: .5rem 1rem; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); background: var(--bg); color: var(--text); font-size: .85rem; outline: none; width: 220px; }
     .search-box:focus { border-color: var(--accent); }
     table { width: 100%; border-collapse: collapse; }
     thead th { text-align: left; padding: .7rem 1.2rem; font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; color: var(--text-dim); background: var(--surface2); }
@@ -155,16 +174,16 @@
     td:nth-child(3), td:nth-child(4), td:nth-child(5) { text-align: center; }
     td.score-col { color: var(--gold); font-weight: 700; }
     .progress-bar-bg { width: 100%; height: 6px; background: rgba(255,255,255,.08); border-radius: 3px; overflow: hidden; }
-    .progress-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--gold)); transition: width .4s; }
+    .progress-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, var(--accent), var(--green)); transition: width .4s; }
     tr.rank-1 td:first-child { color: var(--gold); }
-    tr.rank-2 td:first-child { color: #c0c0c0; }
-    tr.rank-3 td:first-child { color: #cd7f32; }
+    tr.rank-2 td:first-child { color: #cbd5e1; }
+    tr.rank-3 td:first-child { color: #d97706; }
     .empty-state { text-align: center; padding: 3rem; color: var(--text-dim); }
 
     /* ── Modal ──────────────────────── */
     .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); display: none; justify-content: center; align-items: center; z-index: 100; }
     .modal-overlay.show { display: flex; }
-    .modal-box { background: var(--surface); border-radius: var(--radius); padding: 2rem; max-width: 400px; width: 90%; text-align: center; border: 1px solid rgba(255,255,255,.08); }
+    .modal-box { background: var(--surface); border-radius: var(--radius); padding: 2rem; max-width: 420px; width: 90%; text-align: center; border: 1px solid rgba(255,255,255,.08); }
     .modal-box h3 { margin-bottom: .8rem; }
     .modal-box p { color: var(--text-dim); margin-bottom: 1.5rem; font-size: .9rem; }
     .modal-btns { display: flex; gap: .8rem; justify-content: center; }
@@ -174,15 +193,12 @@
     @keyframes blink { 0%,100%{ opacity:1; } 50%{ opacity:.3; } }
 
     .hidden { display: none !important; }
-    @media (max-width: 600px) {
-      body { padding: 0; }
-      .dashboard { padding: 1rem; }
-      .header h1 { font-size: 1.2rem; }
+    @media (max-width: 768px) {
+      .config-grid { grid-template-columns: 1fr; }
       .search-box { width: 100%; }
       .table-header { flex-direction: column; align-items: flex-start; gap: .6rem; }
       .pin-card { flex-direction: column; text-align: center; }
       .pin-actions { margin-left: 0; }
-      .big-timer { font-size: 2.5rem; }
     }
   </style>
 </head>
@@ -191,60 +207,78 @@
   <!-- ═══ LOGIN SCREEN ═══ -->
   <div class="login-screen" id="login-screen">
     <div class="login-card">
-      <h1>🎛️ Host Login</h1>
-      <p class="sub">Enter the admin password to access the dashboard</p>
-      <input type="password" id="admin-pass" placeholder="Admin password..." autocomplete="off" />
-      <button id="login-btn">Log In</button>
+      <h1>🎛️ Instructor Portal</h1>
+      <p class="sub">Gandalf Prompt Injection CTF Arena Control</p>
+      <input type="password" id="admin-pass" placeholder="Enter admin password..." autocomplete="off" />
+      <button id="login-btn">Authenticate</button>
       <p class="login-error" id="login-error"></p>
     </div>
   </div>
 
   <!-- ═══ DASHBOARD ═══ -->
   <div class="dashboard" id="dashboard">
-
     <div class="header">
-      <h1>🎛️ Host Dashboard</h1>
+      <h1>🎛️ Gandalf CTF — Instructor Control Center</h1>
       <div class="header-actions">
-        <button class="btn btn-link" onclick="window.open('/','_blank')">🎮 Player View</button>
-        <button class="btn btn-danger" id="reset-btn">🔄 Reset</button>
+        <button class="btn btn-link" onclick="window.open('/','_blank')">🎮 Student View</button>
+        <button class="btn btn-danger" id="reset-btn">🔄 Reset CTF</button>
         <button class="btn btn-ghost" id="logout-btn">🚪 Logout</button>
       </div>
     </div>
 
-    <!-- Game PIN -->
-    <div class="pin-card">
-      <div>
-        <div class="pin-label">🔑 GAME PIN — Tell students this code</div>
-        <div class="pin-value" id="pin-display">----</div>
+    <!-- Configuration Grid (PIN + Network URL) -->
+    <div class="config-grid">
+      <!-- Game PIN -->
+      <div class="pin-card">
+        <div>
+          <div class="pin-label">🔑 Arena Game PIN</div>
+          <div class="pin-value" id="pin-display">----</div>
+        </div>
+        <div class="pin-actions">
+          <button class="btn btn-link" id="copy-pin-btn">📋 Copy</button>
+          <button class="btn btn-ghost" id="regen-pin-btn">🔄 New PIN</button>
+        </div>
       </div>
-      <div class="pin-actions">
-        <button class="btn btn-link" id="copy-pin-btn">📋 Copy</button>
-        <button class="btn btn-ghost" id="regen-pin-btn">🔄 New PIN</button>
+
+      <!-- Network URL -->
+      <div class="network-bar">
+        <div>
+          <div class="label">📡 Student Connect URL</div>
+          <div style="margin-top: .4rem;">
+            <span class="url" id="share-url" title="Click to copy"></span>
+            <span class="copy-msg" id="copy-msg">✅ Copied!</span>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Network URL -->
-    <div class="network-bar">
-      <span class="label">📡 Student URL →</span>
-      <span class="url" id="share-url" title="Click to copy"></span>
-      <span class="copy-msg" id="copy-msg">✅ Copied!</span>
+    <!-- AI Engine Configuration -->
+    <div class="engine-card">
+      <div class="engine-info">
+        <h3>🤖 AI Reasoning Engine</h3>
+        <p id="engine-status">Using Built-in Gandalf Prompt Injection Simulator (Zero Rate Limits, 100% Offline Ready for 70+ Students)</p>
+      </div>
+      <div class="engine-controls">
+        <input type="password" class="engine-input" id="api-key-input" placeholder="Optional: Gemini API Key..." />
+        <button class="btn btn-link" id="save-key-btn">Save Key</button>
+      </div>
     </div>
 
     <!-- State Banner -->
     <div class="state-banner state-lobby" id="state-banner">
       <span id="state-icon">🏰</span>
-      <span id="state-text">LOBBY — Waiting for players to join</span>
+      <span id="state-text">LOBBY — Waiting for students to join the arena</span>
     </div>
 
     <!-- Lobby Controls -->
     <div id="lobby-section" class="lobby-controls">
-      <h2>🚀 Start the Game</h2>
+      <h2>🚀 Launch Prompt Injection Challenge</h2>
       <div class="timer-config">
-        <label for="timer-select">⏱️ Quiz Duration:</label>
+        <label for="timer-select">⏱️ Challenge Duration:</label>
         <select id="timer-select">
-          <option value="120">2 Minutes</option>
+          <option value="180">3 Minutes (Speed Run)</option>
           <option value="300">5 Minutes</option>
-          <option value="600" selected>10 Minutes</option>
+          <option value="600" selected>10 Minutes (Standard)</option>
           <option value="900">15 Minutes</option>
           <option value="1200">20 Minutes</option>
           <option value="1800">30 Minutes</option>
@@ -253,26 +287,26 @@
         </select>
       </div>
       <div id="lobby-chips" class="lobby-player-list">
-        <span style="color: var(--text-dim);">No players yet...</span>
+        <span style="color: var(--text-dim);">No students connected yet...</span>
       </div>
-      <button class="btn btn-start" id="start-btn" disabled>▶ Start Game</button>
+      <button class="btn btn-start" id="start-btn" disabled>▶ Start Challenge</button>
       <p class="start-error" id="start-error"></p>
     </div>
 
-    <!-- Running Timer -->
+    <!-- Running Timer Display -->
     <div id="playing-section" class="running-timer hidden">
       <div>
         <div class="big-timer" id="big-timer">00:00</div>
-        <div style="color: var(--text-dim); font-size:.8rem; margin-top:.3rem;">TIME REMAINING</div>
+        <div style="color: var(--text-dim); font-size:.8rem; margin-top:.3rem; text-transform:uppercase; letter-spacing:1px;">CHALLENGE TIME REMAINING</div>
       </div>
-      <button class="btn btn-end" id="end-btn">⏹ End Game Early</button>
+      <button class="btn btn-end" id="end-btn">⏹ End Challenge Early</button>
     </div>
 
     <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-card online">
         <div class="stat-value" id="stat-online">0</div>
-        <div class="stat-label"><span class="live-dot"></span>Players Online</div>
+        <div class="stat-label"><span class="live-dot"></span>Challengers Online</div>
       </div>
       <div class="stat-card avg">
         <div class="stat-value" id="stat-avg">0</div>
@@ -280,24 +314,28 @@
       </div>
       <div class="stat-card top">
         <div class="stat-value" id="stat-top">—</div>
-        <div class="stat-label">🥇 Top Player</div>
+        <div class="stat-label">🥇 Top Hacker</div>
       </div>
       <div class="stat-card done">
         <div class="stat-value" id="stat-done">0</div>
-        <div class="stat-label">Finished All</div>
+        <div class="stat-label">Cleared All 8 Levels</div>
       </div>
     </div>
 
     <!-- Leaderboard Table -->
     <div class="table-card">
       <div class="table-header">
-        <h2>🏆 Full Leaderboard <span class="count" id="player-count">(0 players)</span></h2>
-        <input type="text" class="search-box" id="search" placeholder="🔍 Search player..." />
+        <h2>🏆 Real-time Arena Leaderboard <span class="count" id="player-count">(0 students)</span></h2>
+        <input type="text" class="search-box" id="search" placeholder="🔍 Search hacker..." />
       </div>
       <div style="overflow-x:auto;">
         <table>
-          <thead><tr><th>Rank</th><th>Player</th><th>Solved</th><th>Progress</th><th>Score</th></tr></thead>
-          <tbody id="lb-body"><tr><td colspan="5" class="empty-state">Waiting for players to join...</td></tr></tbody>
+          <thead>
+            <tr><th>Rank</th><th>Challenger</th><th>Level Reached</th><th>Progress</th><th>Score</th></tr>
+          </thead>
+          <tbody id="lb-body">
+            <tr><td colspan="5" class="empty-state">Waiting for challengers to join...</td></tr>
+          </tbody>
         </table>
       </div>
     </div>
@@ -306,11 +344,11 @@
   <!-- Reset Modal -->
   <div class="modal-overlay" id="modal">
     <div class="modal-box">
-      <h3>⚠️ Reset Game?</h3>
-      <p>Disconnects all players, clears scores, and generates a new PIN.</p>
+      <h3>⚠️ Reset Gandalf CTF Arena?</h3>
+      <p>This will disconnect all students, wipe scores, and generate a new Game PIN for the next round.</p>
       <div class="modal-btns">
         <button class="btn btn-cancel" id="modal-cancel">Cancel</button>
-        <button class="btn btn-danger" id="modal-confirm">Yes, Reset</button>
+        <button class="btn btn-danger" id="modal-confirm">Yes, Reset Arena</button>
       </div>
     </div>
   </div>
@@ -318,11 +356,11 @@
   <!-- End Modal -->
   <div class="modal-overlay" id="end-modal">
     <div class="modal-box">
-      <h3>⏹ End Game Early?</h3>
-      <p>Stops the timer and shows final results to all players.</p>
+      <h3>⏹ End Challenge Now?</h3>
+      <p>Stops the countdown immediately and presents final standings and ranks to all students.</p>
       <div class="modal-btns">
         <button class="btn btn-cancel" id="end-modal-cancel">Cancel</button>
-        <button class="btn btn-end" id="end-modal-confirm">Yes, End Game</button>
+        <button class="btn btn-end" id="end-modal-confirm">Yes, End Challenge</button>
       </div>
     </div>
   </div>
@@ -334,7 +372,6 @@
     let adminToken = sessionStorage.getItem("adminToken") || "";
     let currentState = "lobby";
 
-    // ── DOM ────────────────────────────────────
     const loginScreen = document.getElementById("login-screen");
     const dashboard   = document.getElementById("dashboard");
     const adminPass   = document.getElementById("admin-pass");
@@ -342,41 +379,42 @@
     const loginError  = document.getElementById("login-error");
     const pinDisplay  = document.getElementById("pin-display");
 
-    // ── Auth helper ────────────────────────────
-    function authHeaders() { return { "Content-Type": "application/json", "X-Admin-Token": adminToken }; }
+    function authHeaders() {
+      return { "Content-Type": "application/json", "X-Admin-Token": adminToken };
+    }
 
     function authFetch(url, opts = {}) {
       opts.headers = { ...authHeaders(), ...(opts.headers || {}) };
-      return fetch(url, opts).then(r => {
+      return fetch(url, opts).then((r) => {
         if (r.status === 401) { logout(); throw new Error("Session expired"); }
         return r.json();
       });
     }
 
-    // ── Login ──────────────────────────────────
     function tryLogin() {
       const pass = adminPass.value.trim();
-      if (!pass) { loginError.textContent = "Enter the password."; return; }
+      if (!pass) { loginError.textContent = "Please enter the admin password."; return; }
+
       fetch("/api/admin/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ password: pass }),
       })
-        .then(r => r.json())
-        .then(data => {
+        .then((r) => r.json())
+        .then((data) => {
           if (data.success) {
             adminToken = data.token;
             sessionStorage.setItem("adminToken", adminToken);
             pinDisplay.textContent = data.pin;
             showDashboard();
           } else {
-            loginError.textContent = data.error || "Login failed.";
+            loginError.textContent = data.error || "Authentication failed.";
           }
         });
     }
 
     loginBtn.addEventListener("click", tryLogin);
-    adminPass.addEventListener("keydown", e => { if (e.key === "Enter") tryLogin(); });
+    adminPass.addEventListener("keydown", (e) => { if (e.key === "Enter") tryLogin(); });
 
     function showDashboard() {
       loginScreen.classList.add("hidden");
@@ -396,49 +434,69 @@
 
     document.getElementById("logout-btn").addEventListener("click", logout);
 
-    // ── Auto-login if token exists ─────────────
     if (adminToken) {
       authFetch("/api/status")
         .then(() => showDashboard())
         .catch(() => { adminToken = ""; sessionStorage.removeItem("adminToken"); });
     }
 
-    // ── Load status ────────────────────────────
     function loadStatus() {
-      authFetch("/api/status").then(data => {
+      authFetch("/api/status").then((data) => {
         currentState = data.state;
         pinDisplay.textContent = data.pin;
         updateUI();
+        updateEngineStatus(data.hasApiKey);
         if (data.players.length > 0) {
           document.getElementById("lobby-chips").innerHTML = data.players
-            .map(n => `<span class="lobby-chip">🧙 ${escHtml(n)}</span>`).join("");
+            .map((n) => `<span class="lobby-chip">🧙‍♂️ ${escHtml(n)}</span>`)
+            .join("");
           document.getElementById("start-btn").disabled = false;
         }
       }).catch(() => {});
     }
 
-    // ── Share URL ──────────────────────────────
+    function updateEngineStatus(hasKey) {
+      const statusEl = document.getElementById("engine-status");
+      if (hasKey) {
+        statusEl.textContent = "⚡ Real Gemini API Active (with automatic fallback to simulator)";
+      } else {
+        statusEl.textContent = "Using Built-in Gandalf Prompt Injection Simulator (Zero Rate Limits, 100% Offline Ready for 70+ Students)";
+      }
+    }
+
+    document.getElementById("save-key-btn").addEventListener("click", () => {
+      const apiKey = document.getElementById("api-key-input").value.trim();
+      authFetch("/api/set-api-key", {
+        method: "POST",
+        body: JSON.stringify({ apiKey }),
+      }).then((data) => {
+        updateEngineStatus(data.hasApiKey);
+        alert(data.hasApiKey ? "Gemini API key enabled!" : "API key cleared. Simulator active.");
+      });
+    });
+
+    // Share URL
     const shareUrl = document.getElementById("share-url");
     shareUrl.textContent = location.origin;
     shareUrl.addEventListener("click", () => {
       navigator.clipboard.writeText(location.origin).then(() => {
         const m = document.getElementById("copy-msg");
-        m.classList.add("show"); setTimeout(() => m.classList.remove("show"), 2000);
+        m.classList.add("show");
+        setTimeout(() => m.classList.remove("show"), 2000);
       });
     });
 
-    // ── PIN actions ────────────────────────────
+    // PIN actions
     document.getElementById("copy-pin-btn").addEventListener("click", () => {
       navigator.clipboard.writeText(pinDisplay.textContent);
     });
 
     document.getElementById("regen-pin-btn").addEventListener("click", () => {
-      authFetch("/api/pin/regenerate", { method: "POST" }).then(data => {
+      authFetch("/api/pin/regenerate", { method: "POST" }).then((data) => {
         pinDisplay.textContent = data.pin;
       });
     });
 
-    // ── UI state ───────────────────────────────
     function updateUI() {
       const banner = document.getElementById("state-banner");
       banner.className = "state-banner state-" + currentState;
@@ -448,102 +506,142 @@
       const playing = document.getElementById("playing-section");
 
       if (currentState === "lobby") {
-        icon.textContent = "🏰"; text.textContent = "LOBBY — Waiting for players to join";
-        lobby.classList.remove("hidden"); playing.classList.add("hidden");
+        icon.textContent = "🏰";
+        text.textContent = "LOBBY — Waiting for students to join the arena";
+        lobby.classList.remove("hidden");
+        playing.classList.add("hidden");
       } else if (currentState === "playing") {
-        icon.textContent = "🎮"; text.textContent = "PLAYING — Game in progress!";
-        lobby.classList.add("hidden"); playing.classList.remove("hidden");
+        icon.textContent = "🎮";
+        text.textContent = "CHALLENGE IN PROGRESS — Hackers are interrogating Gandalf!";
+        lobby.classList.add("hidden");
+        playing.classList.remove("hidden");
       } else {
-        icon.textContent = "🏁"; text.textContent = "FINISHED — Game over!";
-        lobby.classList.add("hidden"); playing.classList.add("hidden");
+        icon.textContent = "🏁";
+        text.textContent = "CHALLENGE FINISHED — Final standings locked!";
+        lobby.classList.add("hidden");
+        playing.classList.add("hidden");
       }
     }
 
-    // ── Socket events ──────────────────────────
-    socket.on("game_state", d => { currentState = d.state; updateUI(); });
-    socket.on("lobby_update", d => {
+    // Socket events
+    socket.on("game_state", (d) => { currentState = d.state; updateUI(); });
+    socket.on("lobby_update", (d) => {
       document.getElementById("start-btn").disabled = d.playerCount === 0;
       const chips = document.getElementById("lobby-chips");
       chips.innerHTML = d.players.length
-        ? d.players.map(n => `<span class="lobby-chip">🧙 ${escHtml(n)}</span>`).join("")
-        : '<span style="color:var(--text-dim)">No players yet...</span>';
+        ? d.players.map((n) => `<span class="lobby-chip">🧙‍♂️ ${escHtml(n)}</span>`).join("")
+        : '<span style="color:var(--text-dim)">No students connected yet...</span>';
     });
-    socket.on("timer_tick", remaining => {
-      const m = Math.floor(remaining/60).toString().padStart(2,"0");
-      const s = (remaining%60).toString().padStart(2,"0");
+
+    socket.on("timer_tick", (remaining) => {
+      const m = Math.floor(remaining / 60).toString().padStart(2, "0");
+      const s = (remaining % 60).toString().padStart(2, "0");
       const bt = document.getElementById("big-timer");
       bt.textContent = `${m}:${s}`;
       bt.classList.toggle("danger", remaining <= 30);
     });
+
     socket.on("game_finished", () => { currentState = "finished"; updateUI(); });
-    socket.on("leaderboard", data => { board = data; renderStats(); renderTable(); });
+    socket.on("leaderboard", (data) => { board = data; renderStats(); renderTable(); });
+
     socket.on("game_reset", () => {
       board = []; currentState = "lobby"; updateUI(); renderStats(); renderTable();
       document.getElementById("start-btn").disabled = true;
-      document.getElementById("start-btn").textContent = "▶ Start Game";
-      document.getElementById("lobby-chips").innerHTML = '<span style="color:var(--text-dim)">No players yet...</span>';
-      loadStatus(); // Refresh PIN
+      document.getElementById("start-btn").textContent = "▶ Start Challenge";
+      document.getElementById("lobby-chips").innerHTML = '<span style="color:var(--text-dim)">No students connected yet...</span>';
+      loadStatus();
     });
 
-    // ── Stats & Table ──────────────────────────
     function renderStats() {
       document.getElementById("stat-online").textContent = board.length;
-      document.getElementById("player-count").textContent = `(${board.length} player${board.length!==1?'s':''})`;
+      document.getElementById("player-count").textContent = `(${board.length} student${board.length !== 1 ? 's' : ''})`;
       if (!board.length) {
         document.getElementById("stat-avg").textContent = "0";
         document.getElementById("stat-top").textContent = "—";
         document.getElementById("stat-done").textContent = "0";
         return;
       }
-      document.getElementById("stat-avg").textContent = Math.round(board.reduce((s,p)=>s+p.score,0)/board.length);
+      document.getElementById("stat-avg").textContent = Math.round(board.reduce((s, p) => s + p.score, 0) / board.length);
       document.getElementById("stat-top").textContent = board[0].name;
-      document.getElementById("stat-done").textContent = board.filter(p=>p.solved>=p.total).length;
+      document.getElementById("stat-done").textContent = board.filter((p) => p.completed).length;
     }
 
-    function renderTable(filter="") {
+    function renderTable(filter = "") {
       const tbody = document.getElementById("lb-body");
-      const f = filter ? board.filter(p=>p.name.toLowerCase().includes(filter.toLowerCase())) : board;
-      if (!f.length) { tbody.innerHTML=`<tr><td colspan="5" class="empty-state">${filter?"No match":"Waiting for players..."}</td></tr>`; return; }
-      tbody.innerHTML = f.map(p => {
-        const rank = board.indexOf(p)+1;
-        const medal = rank===1?"🥇":rank===2?"🥈":rank===3?"🥉":rank;
-        const rc = rank<=3?` class="rank-${rank}"`:"";
-        const pct = Math.round(p.solved/p.total*100);
-        return `<tr${rc}><td>${medal}</td><td>${escHtml(p.name)}</td><td>${p.solved}/${p.total}</td><td><div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${pct}%"></div></div></td><td class="score-col">${p.score}</td></tr>`;
+      const f = filter ? board.filter((p) => p.name.toLowerCase().includes(filter.toLowerCase())) : board;
+      if (!f.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="empty-state">${filter ? "No matching hackers" : "Waiting for challengers..."}</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = f.map((p) => {
+        const rank = board.indexOf(p) + 1;
+        const medal = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : rank;
+        const rc = rank <= 3 ? ` class="rank-${rank}"` : "";
+        const pct = Math.round((p.level / p.totalLevels) * 100);
+        return `<tr${rc}>
+          <td>${medal}</td>
+          <td><strong>${escHtml(p.name)}</strong></td>
+          <td>Level ${p.level} / ${p.totalLevels}</td>
+          <td>
+            <div class="progress-bar-bg">
+              <div class="progress-bar-fill" style="width:${pct}%"></div>
+            </div>
+          </td>
+          <td class="score-col">${p.score}</td>
+        </tr>`;
       }).join("");
     }
 
-    document.getElementById("search").addEventListener("input", e => renderTable(e.target.value));
+    document.getElementById("search").addEventListener("input", (e) => renderTable(e.target.value));
 
-    // ── Start ──────────────────────────────────
+    // Start
     document.getElementById("start-btn").addEventListener("click", () => {
       const sec = document.getElementById("timer-select").value;
       const btn = document.getElementById("start-btn");
-      btn.disabled = true; btn.textContent = "Starting...";
+      btn.disabled = true;
+      btn.textContent = "Launching...";
       document.getElementById("start-error").textContent = "";
+
       authFetch(`/api/start?timer=${sec}`, { method: "POST" })
-        .then(d => { if (d.error) { document.getElementById("start-error").textContent = d.error; btn.disabled = false; btn.textContent = "▶ Start Game"; } })
-        .catch(() => { btn.disabled = false; btn.textContent = "▶ Start Game"; });
+        .then((d) => {
+          if (d.error) {
+            document.getElementById("start-error").textContent = d.error;
+            btn.disabled = false;
+            btn.textContent = "▶ Start Challenge";
+          }
+        })
+        .catch(() => {
+          btn.disabled = false;
+          btn.textContent = "▶ Start Challenge";
+        });
     });
 
-    // ── End ────────────────────────────────────
+    // End
     const endModal = document.getElementById("end-modal");
     document.getElementById("end-btn").addEventListener("click", () => endModal.classList.add("show"));
     document.getElementById("end-modal-cancel").addEventListener("click", () => endModal.classList.remove("show"));
     document.getElementById("end-modal-confirm").addEventListener("click", () => {
-      authFetch("/api/end", { method: "POST" }); endModal.classList.remove("show");
+      authFetch("/api/end", { method: "POST" });
+      endModal.classList.remove("show");
     });
 
-    // ── Reset ──────────────────────────────────
+    // Reset
     const modal = document.getElementById("modal");
     document.getElementById("reset-btn").addEventListener("click", () => modal.classList.add("show"));
     document.getElementById("modal-cancel").addEventListener("click", () => modal.classList.remove("show"));
     document.getElementById("modal-confirm").addEventListener("click", () => {
-      authFetch("/api/reset", { method: "POST" }).then(d => { if (d.pin) pinDisplay.textContent = d.pin; });
+      authFetch("/api/reset", { method: "POST" }).then((d) => {
+        if (d.pin) pinDisplay.textContent = d.pin;
+      });
       modal.classList.remove("show");
     });
 
-    function escHtml(str) { const d=document.createElement("div"); d.textContent=str; return d.innerHTML; }
+    function escHtml(str) {
+      const d = document.createElement("div");
+      d.textContent = str;
+      return d.innerHTML;
+    }
   </script>
 </body>
 </html>
