@@ -6,7 +6,7 @@ let openRouterApiKey = process.env.OPENROUTER_API_KEY || "";
 const openRouterModel = "google/gemini-3.5-flash-lite";
 
 function setOpenRouterApiKey(key) {
-  openRouterApiKey = (key || "").trim();
+  openRouterApiKey = typeof key === "string" ? key.trim() : "";
 }
 
 function getOpenRouterApiKey() {
