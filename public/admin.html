@@ -250,7 +250,7 @@
     <div class="engine-card">
       <div class="engine-info">
         <h3>🤖 AI Reasoning Engine</h3>
-        <p id="engine-status">OpenRouter API key not configured. Set OPENROUTER_API_KEY in the server's .env file.</p>
+        <p id="engine-status">OpenRouter API key not configured. Set OPENROUTER_API_KEY in the Render service's Environment settings, then redeploy.</p>
       </div>
     </div>
 
@@ -450,7 +450,7 @@
       if (hasKey) {
         statusEl.textContent = "⚡ OpenRouter API key configured. Using the selected OpenRouter model.";
       } else {
-        statusEl.textContent = "OpenRouter API key not configured. Set OPENROUTER_API_KEY in the server's .env file.";
+        statusEl.textContent = "OpenRouter API key not configured. Set OPENROUTER_API_KEY in the Render service's Environment settings, then redeploy.";
       }
     }
 

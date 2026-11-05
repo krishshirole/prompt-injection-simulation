@@ -2,7 +2,7 @@
 // AI Engine: Gandalf Prompt Injection Simulator & LLM Router
 // ══════════════════════════════════════════════════════════════════════
 
-const openRouterApiKey = process.env.OPENROUTER_API_KEY || "";
+const openRouterApiKey = (process.env.OPENROUTER_API_KEY || "").trim();
 const openRouterModel = "google/gemini-3.5-flash-lite";
 
 function getOpenRouterApiKey() {

@@ -26,6 +26,12 @@ app.use(express.static(path.join(__dirname, "public")));
 // ── Configuration ────────────────────────────────────────────────────
 const ADMIN_PASSWORD = process.env.ADMIN_PASS || "admin123";
 
+if (!getOpenRouterApiKey()) {
+  console.warn(
+    "OPENROUTER_API_KEY is not set. Add it in the Render service's Environment settings and redeploy to enable AI responses."
+  );
+}
+
 // ── In-memory state ──────────────────────────────────────────────────
 // socketId → { name, score, currentLevel, hintsUsed: Set/Array, completed }
 const players = new Map();
