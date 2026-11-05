@@ -256,10 +256,10 @@
     <div class="engine-card">
       <div class="engine-info">
         <h3>🤖 AI Reasoning Engine</h3>
-        <p id="engine-status">Using Built-in Gandalf Prompt Injection Simulator (Zero Rate Limits, 100% Offline Ready for 70+ Students)</p>
+        <p id="engine-status">OpenRouter API key not configured. Add and save a key to enable AI-generated responses.</p>
       </div>
       <div class="engine-controls">
-        <input type="password" class="engine-input" id="api-key-input" placeholder="Optional: Gemini API Key..." />
+        <input type="password" class="engine-input" id="api-key-input" placeholder="Optional: OpenRouter API Key..." />
         <button class="btn btn-link" id="save-key-btn">Save Key</button>
       </div>
     </div>
@@ -445,7 +445,7 @@
         currentState = data.state;
         pinDisplay.textContent = data.pin;
         updateUI();
-        updateEngineStatus(data.hasApiKey);
+        updateEngineStatus(data.hasOpenRouterApiKey);
         if (data.players.length > 0) {
           document.getElementById("lobby-chips").innerHTML = data.players
             .map((n) => `<span class="lobby-chip">🧙‍♂️ ${escHtml(n)}</span>`)
@@ -458,21 +458,23 @@
     function updateEngineStatus(hasKey) {
       const statusEl = document.getElementById("engine-status");
       if (hasKey) {
-        statusEl.textContent = "⚡ Real Gemini API Active (with automatic fallback to simulator)";
+        statusEl.textContent = "⚡ OpenRouter API key configured. Using the selected OpenRouter model.";
       } else {
-        statusEl.textContent = "Using Built-in Gandalf Prompt Injection Simulator (Zero Rate Limits, 100% Offline Ready for 70+ Students)";
+        statusEl.textContent = "OpenRouter API key not configured. Add and save a key to enable AI-generated responses.";
       }
     }
 
     document.getElementById("save-key-btn").addEventListener("click", () => {
       const apiKey = document.getElementById("api-key-input").value.trim();
-      authFetch("/api/set-api-key", {
+      authFetch("/api/set-openrouter-key", {
         method: "POST",
         body: JSON.stringify({ apiKey }),
       }).then((data) => {
-        updateEngineStatus(data.hasApiKey);
-        alert(data.hasApiKey ? "Gemini API key enabled!" : "API key cleared. Simulator active.");
-      });
+        updateEngineStatus(data.hasOpenRouterApiKey);
+        alert(data.hasOpenRouterApiKey
+          ? "OpenRouter API key saved. It will be used when a player sends a prompt."
+          : "API key cleared. OpenRouter responses are disabled.");
+      }).catch((error) => alert(`Could not save OpenRouter API key: ${error.message}`));
     });
 
     // Share URL

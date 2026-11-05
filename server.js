@@ -4,7 +4,11 @@ const { Server } = require("socket.io");
 const path = require("path");
 const crypto = require("crypto");
 const levels = require("./levels.json");
-const { queryGemini, setApiKey, getApiKey } = require("./aiEngine");
+const {
+  queryOpenRouter,
+  setOpenRouterApiKey,
+  getOpenRouterApiKey,
+} = require("./aiEngine");
 
 const app = express();
 app.use(express.json());
@@ -24,6 +28,7 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASS || "admin123";
 // ── In-memory state ──────────────────────────────────────────────────
 // socketId → { name, score, currentLevel, hintsUsed: Set/Array, completed }
 const players = new Map();
+const assignedPasswords = new Set();
 const adminTokens = new Set();
 
 let gameState = "lobby"; // "lobby" | "playing" | "finished"
@@ -38,6 +43,30 @@ function generatePin() {
 
 function generateToken() {
   return crypto.randomBytes(32).toString("hex");
+}
+
+function createPlayerLevels() {
+  return levels.map((level) => {
+    let password;
+    do {
+      const uniqueCode = crypto.randomBytes(6).toString("hex").toUpperCase();
+      password = `${level.password}${uniqueCode}`;
+    } while (assignedPasswords.has(password));
+    assignedPasswords.add(password);
+
+    return {
+      ...level,
+      password,
+      systemPrompt: level.systemPrompt.replaceAll(level.password, password),
+      hint: `${level.hint} The full password includes a unique code assigned to you; the original word alone will not unlock this level.`,
+      inputFilter: level.inputFilter?.map((forbidden) =>
+        forbidden.toUpperCase() === level.password.toUpperCase()
+          ? password
+          : forbidden
+      ),
+      outputFilter: level.outputFilter ? password : null,
+    };
+  });
 }
 
 function requireAdmin(req, res, next) {
@@ -123,7 +152,12 @@ app.post("/api/admin/login", (req, res) => {
     const token = generateToken();
     adminTokens.add(token);
     console.log("🔐 Admin logged in");
-    return res.json({ success: true, token, pin: gamePin, hasApiKey: !!getApiKey() });
+    return res.json({
+      success: true,
+      token,
+      pin: gamePin,
+      hasOpenRouterApiKey: !!getOpenRouterApiKey(),
+    });
   }
   res.status(401).json({ success: false, error: "Wrong password." });
 });
@@ -142,7 +176,7 @@ app.get("/api/status", requireAdmin, (_req, res) => {
     timerDuration,
     timerRemaining,
     players: getLobbyList(),
-    hasApiKey: !!getApiKey(),
+    hasOpenRouterApiKey: !!getOpenRouterApiKey(),
   });
 });
 
@@ -152,11 +186,11 @@ app.post("/api/pin/regenerate", requireAdmin, (_req, res) => {
   res.json({ pin: gamePin });
 });
 
-app.post("/api/set-api-key", requireAdmin, (req, res) => {
+app.post("/api/set-openrouter-key", requireAdmin, (req, res) => {
   const { apiKey } = req.body;
-  setApiKey(apiKey);
-  console.log(`🤖 Gemini API key updated: ${apiKey ? "Active" : "Disabled (using local simulator)"}`);
-  res.json({ success: true, hasApiKey: !!getApiKey() });
+  setOpenRouterApiKey(apiKey);
+  console.log(`🤖 OpenRouter API key updated: ${apiKey ? "Active" : "Disabled (using local simulator)"}`);
+  res.json({ success: true, hasOpenRouterApiKey: !!getOpenRouterApiKey() });
 });
 
 app.get("/api/leaderboard", requireAdmin, (_req, res) => {
@@ -181,7 +215,7 @@ app.post("/api/start", requireAdmin, (req, res) => {
   for (const [socketId, player] of players) {
     const s = io.sockets.sockets.get(socketId);
     if (s) {
-      const lvl = levels.find((l) => l.id === player.currentLevel);
+      const lvl = player.levels.find((l) => l.id === player.currentLevel);
       s.emit("game_started", {
         level: safeLevel(lvl),
         totalLevels: levels.length,
@@ -216,6 +250,7 @@ app.post("/api/reset", requireAdmin, (_req, res) => {
   timerRemaining = 0;
   gamePin = generatePin();
   players.clear();
+  assignedPasswords.clear();
   io.emit("game_reset");
   io.emit("leaderboard", []);
   io.emit("game_state", { state: "lobby" });
@@ -256,6 +291,7 @@ io.on("connection", (socket) => {
       name,
       score: 0,
       currentLevel: 1,
+      levels: createPlayerLevels(),
       hintsUsed: [],
       completed: false,
     };
@@ -272,7 +308,7 @@ io.on("connection", (socket) => {
         players: getLobbyList(),
       });
     } else if (gameState === "playing") {
-      const lvl = levels.find((l) => l.id === player.currentLevel);
+      const lvl = player.levels.find((l) => l.id === player.currentLevel);
       socket.emit("joined", {
         name,
         level: safeLevel(lvl),
@@ -295,22 +331,24 @@ io.on("connection", (socket) => {
     prompt = (prompt || "").trim();
     if (!prompt) return;
 
-    const level = levels.find((l) => l.id === player.currentLevel);
+    const level = player.levels.find((l) => l.id === player.currentLevel);
     if (!level) return;
 
     try {
-      const result = await queryGemini(prompt, level);
+      const result = await queryOpenRouter(prompt, level);
       socket.emit("chat_response", {
         prompt,
         response: result.response,
         blocked: result.blocked,
         reason: result.reason,
+        source: result.source,
       });
     } catch (err) {
       socket.emit("chat_response", {
         prompt,
-        response: "An anomaly occurred in the wizarding network. Try again!",
+        response: "The mists cloud my thoughts for a moment. Please ask me again shortly.",
         blocked: false,
+        reason: "chat_error",
       });
     }
   });
@@ -322,7 +360,7 @@ io.on("connection", (socket) => {
     if (!player || player.completed) return;
 
     const guess = (password || "").trim().toUpperCase();
-    const level = levels.find((l) => l.id === player.currentLevel);
+    const level = player.levels.find((l) => l.id === player.currentLevel);
     if (!level) return;
 
     if (guess === level.password.toUpperCase()) {
@@ -336,7 +374,7 @@ io.on("connection", (socket) => {
         player.completed = true;
       }
 
-      const nextLvl = levels.find((l) => l.id === player.currentLevel);
+      const nextLvl = player.levels.find((l) => l.id === player.currentLevel);
 
       socket.emit("password_result", {
         correct: true,
@@ -365,7 +403,7 @@ io.on("connection", (socket) => {
     const player = players.get(socket.id);
     if (!player || player.completed) return;
 
-    const level = levels.find((l) => l.id === player.currentLevel);
+    const level = player.levels.find((l) => l.id === player.currentLevel);
     if (!level) return;
 
     if (!player.hintsUsed.includes(level.id)) {

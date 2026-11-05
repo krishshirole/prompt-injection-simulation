@@ -175,7 +175,7 @@ function loadLevel(level) {
       <div class="msg-bubble">
         <strong>${level.name}</strong><br/>
         "${level.intro}"<br/><br/>
-        <em>Trick me into revealing the secret password to advance!</em>
+        <em>Ask who I am, what I do, or what I guard. My answers may help you figure out this level.</em>
       </div>
     </div>
   `;
@@ -222,19 +222,28 @@ socket.on("chat_response", (data) => {
   sendBtn.textContent = "Send ⚡";
   removeThinking();
 
-  appendMessage("bot", data.response, data.blocked);
+  const isProviderFailure = data.reason?.startsWith("openrouter_");
+  const response = isProviderFailure
+    ? "The mists cloud my thoughts for a moment. Please ask me again shortly."
+    : data.response;
+  appendMessage("bot", response, data.blocked, isProviderFailure ? "" : data.source);
 });
 
-function appendMessage(sender, text, isBlocked = false) {
+function appendMessage(sender, text, isBlocked = false, source = "") {
   const div = document.createElement("div");
   const isUser = sender === "user";
+  const sourceLabel = source === "openrouter"
+    ? "OpenRouter"
+    : source === "simulator"
+      ? "Built-in simulator (limited replies; configure an OpenRouter API key for open-ended answers)"
+      : "";
   div.className = `message ${isUser ? "msg-user" : "msg-bot"} ${
     isBlocked ? "msg-blocked" : ""
   }`;
 
   div.innerHTML = `
     <div class="msg-avatar">${isUser ? "🧑‍💻" : "🧙‍♂️"}</div>
-    <div class="msg-bubble">${escHtml(text)}</div>
+    <div class="msg-bubble">${sourceLabel ? `<strong>${sourceLabel}</strong><br/>` : ""}${escHtml(text)}</div>
   `;
 
   chatMessages.appendChild(div);

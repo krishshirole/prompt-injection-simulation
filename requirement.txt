@@ -1,0 +1,17 @@
+# Gandalf CTF: Multilevel Prompt Injection Arena
+# System & Python Dependencies
+
+# Core Python Server Dependencies (if running with Python / Flask-SocketIO)
+flask>=3.0.0
+flask-socketio>=5.3.6
+python-socketio>=5.11.0
+gevent>=24.2.1
+gevent-websocket>=0.10.1
+requests>=2.31.0
+google-generativeai>=0.8.0
+
+# Node.js Runtime Dependencies (Default Node.js Server):
+# - node >= 18.0.0 (Installed: v24.10.0)
+# - npm >= 9.0.0   (Installed: 11.6.1)
+# - express >= 4.21.0
+# - socket.io >= 4.7.5
