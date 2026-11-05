@@ -2,12 +2,8 @@
 // AI Engine: Gandalf Prompt Injection Simulator & LLM Router
 // ══════════════════════════════════════════════════════════════════════
 
-let openRouterApiKey = process.env.OPENROUTER_API_KEY || "";
+const openRouterApiKey = process.env.OPENROUTER_API_KEY || "";
 const openRouterModel = "google/gemini-3.5-flash-lite";
-
-function setOpenRouterApiKey(key) {
-  openRouterApiKey = typeof key === "string" ? key.trim() : "";
-}
 
 function getOpenRouterApiKey() {
   return openRouterApiKey;
@@ -452,6 +448,5 @@ Respond as this version of Gandalf. Generate a fresh, natural response to every 
 module.exports = {
   simulateGandalfResponse,
   queryOpenRouter,
-  setOpenRouterApiKey,
   getOpenRouterApiKey,
 };

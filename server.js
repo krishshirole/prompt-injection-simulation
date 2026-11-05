@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
@@ -6,7 +8,6 @@ const crypto = require("crypto");
 const levels = require("./levels.json");
 const {
   queryOpenRouter,
-  setOpenRouterApiKey,
   getOpenRouterApiKey,
 } = require("./aiEngine");
 
@@ -184,13 +185,6 @@ app.post("/api/pin/regenerate", requireAdmin, (_req, res) => {
   gamePin = generatePin();
   console.log(`🔑 New game PIN: ${gamePin}`);
   res.json({ pin: gamePin });
-});
-
-app.post("/api/set-openrouter-key", requireAdmin, (req, res) => {
-  const { apiKey } = req.body;
-  setOpenRouterApiKey(apiKey);
-  console.log(`🤖 OpenRouter API key updated: ${apiKey ? "Active" : "Disabled (using local simulator)"}`);
-  res.json({ success: true, hasOpenRouterApiKey: !!getOpenRouterApiKey() });
 });
 
 app.get("/api/leaderboard", requireAdmin, (_req, res) => {
